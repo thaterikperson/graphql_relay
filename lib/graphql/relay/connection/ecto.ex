@@ -181,9 +181,9 @@ if Code.ensure_loaded?(Ecto) do
       case Base.decode64(cursor) do
         {:ok, decoded_cursor} ->
           string = String.slice(decoded_cursor, String.length(@prefix)..String.length(decoded_cursor))
-          case Ecto.DateTime.cast(string) do
+          case NaiveDateTime.from_iso8601(string) do
             {:ok, date} -> date
-            :error -> string
+            {:error, _} -> string
           end
         :error ->
           nil
