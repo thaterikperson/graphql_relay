@@ -8,14 +8,14 @@ defmodule GraphQL.Relay.Mixfile do
   def project do
     [app: :graphql_relay,
      version: @version,
-     elixir: "~> 1.3",
+     elixir: "~> 1.4",
      description: @description,
-     package: package,
+     package: package(),
      source_url: @repo_url,
      homepage_url: @repo_url,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps,
+     deps: deps(),
      name: "GraphQL.Relay",
      docs: [main: "README", extras: ["README.md"]]]
   end

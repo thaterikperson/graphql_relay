@@ -181,7 +181,7 @@ if Code.ensure_loaded?(Ecto) do
       case Base.decode64(cursor) do
         {:ok, decoded_cursor} ->
           string = String.slice(decoded_cursor, String.length(@prefix)..String.length(decoded_cursor))
-          case NaiveDateTime.from_iso8601(string) do
+          case DateTime.from_iso8601(string) do
             {:ok, date} -> date
             {:error, _} -> string
           end
@@ -192,7 +192,7 @@ if Code.ensure_loaded?(Ecto) do
 
     def cursor_for_object_in_connection(object, property \\ :id) do
       prop = case Map.get(object, property) do
-        %Ecto.DateTime{} = date_time -> Ecto.DateTime.to_iso8601(date_time)
+        %DateTime{} = date_time -> DateTime.to_iso8601(date_time)
         prop -> to_string(prop)
       end
 
