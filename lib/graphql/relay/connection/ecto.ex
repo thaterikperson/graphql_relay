@@ -182,7 +182,7 @@ if Code.ensure_loaded?(Ecto) do
         {:ok, decoded_cursor} ->
           string = String.slice(decoded_cursor, String.length(@prefix)..String.length(decoded_cursor))
           case DateTime.from_iso8601(string) do
-            {:ok, date} -> date
+            {:ok, date, _} -> date
             {:error, _} -> string
           end
         :error ->
