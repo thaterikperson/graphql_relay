@@ -83,9 +83,10 @@ if Code.ensure_loaded?(Ecto) do
       end
     """
     def resolve(repo, query, args \\ %{}) do
-      before = cursor_to_offset(args[:before])
+      cursor_to_offset_fn = args[:cursor_to_offset] || &cursor_to_offset/1
+      before = cursor_to_offset_fn.(args[:before])
       # `after` is a keyword http://elixir-lang.org/docs/master/elixir/Kernel.SpecialForms.html#try/1
-      a_after = cursor_to_offset(args[:after])
+      a_after = cursor_to_offset_fn.(args[:after])
       first = args[:first]
       last = args[:last]
       ordered_by_property = args[:ordered_by] || :id
@@ -150,9 +151,11 @@ if Code.ensure_loaded?(Ecto) do
 
       records = repo.all(query)
 
+      cursor_for_object_in_connection_fn = args[:cursor_for_object_in_connection] || &cursor_for_object_in_connection/2
+
       edges = Enum.map(records, fn(record) ->
         %{
-          cursor: cursor_for_object_in_connection(record, ordered_by_property),
+          cursor: cursor_for_object_in_connection_fn.(record, ordered_by_property),
           node: record
         }
       end)
